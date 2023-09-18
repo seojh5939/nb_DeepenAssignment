@@ -183,5 +183,6 @@ fabric.properties
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar
+/app/src/main/java/bootcamp/sparta/nb_deepen_assignment/auth/KakaoAuth.kt
 
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio,android,kotlin
