@@ -1,9 +1,11 @@
 package bootcamp.sparta.nb_deepen_assignment.ui
 
+import android.app.Application
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import bootcamp.sparta.nb_deepen_assignment.R
+import bootcamp.sparta.nb_deepen_assignment.di.ContentApplication
 
 class MainViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity){
     private val list = ArrayList<MainTab>()

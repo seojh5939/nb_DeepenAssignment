@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.viewpager2.widget.ViewPager2
-import bootcamp.sparta.nb_deepen_assignment.R
 import bootcamp.sparta.nb_deepen_assignment.databinding.MainActivityBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
