@@ -1,29 +1,23 @@
-package bootcamp.sparta.nb_deepen_assignment.ui
+package bootcamp.sparta.nb_deepen_assignment.ui.search
 
-import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
-import android.net.Uri
-import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import bootcamp.sparta.nb_deepen_assignment.R
-import bootcamp.sparta.nb_deepen_assignment.databinding.RecyclerItemBinding
+import bootcamp.sparta.nb_deepen_assignment.databinding.SearchItemBinding
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
+import bootcamp.sparta.nb_deepen_assignment.utils.Utils.changeDateFormat
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.TimeZone
 
-class SearchListAdapter(private val context: Context): ListAdapter<ContentData, SearchListAdapter.SearchHolder>(
-    object: DiffUtil.ItemCallback<ContentData>() {
+class SearchListAdapter(
+    private val onLikeClickListener: (Int, ContentData) -> Unit
+) : ListAdapter<ContentData, SearchListAdapter.SearchHolder>(
+    object : DiffUtil.ItemCallback<ContentData>() {
         override fun areItemsTheSame(oldItem: ContentData, newItem: ContentData): Boolean {
             return oldItem.id == newItem.id
         }
@@ -34,30 +28,53 @@ class SearchListAdapter(private val context: Context): ListAdapter<ContentData, 
     }
 ) {
 
-    class SearchHolder(private val binding: RecyclerItemBinding, private val context: Context): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ContentData)=with(binding) {
-            Log.d("Adapter", item.dateTime)
-            val old_format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.000Z", Locale.KOREAN)
-            val old_date = old_format.parse(item.dateTime)
-            val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
-            val new_date = old_date?.let { formatter.format(it) }
+    class SearchHolder(
+        private val binding: SearchItemBinding,
+        private val context: Context,
+        private val onLikeClickListener: (Int, ContentData) -> Unit) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ContentData) = with(binding) {
+            // DateTime
+            dttm.text = changeDateFormat(item.dateTime)
 
-            dttm.text = new_date
+            // Image
             Glide.with(context)
                 .load(item.thumbnail)
                 .into(image)
+
+            // 좋아요
+            if(item.isLike) {
+                like.setBackgroundResource(R.drawable.baseline_star_24)
+            } else {
+                like.setBackgroundResource(R.drawable.baseline_star_border_24)
+            }
+
+            like.setOnClickListener {
+                if(!item.isLike) {
+                    onLikeClickListener(
+                        bindingAdapterPosition,
+                        item.copy(
+                            isLike = true
+                        )
+                    )
+                } else {
+                    onLikeClickListener(
+                        bindingAdapterPosition,
+                        item.copy(
+                            isLike = false
+                        )
+                    )
+                }
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchHolder {
-        val view = RecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//        val layoutParams = RecyclerView.LayoutParams(
-//            ViewGroup.LayoutParams.MATCH_PARENT,
-//            ViewGroup.LayoutParams.WRAP_CONTENT
-//        )
-//        parent.rootView.layoutParams = layoutParams
-//        parent.rootView.setPadding(10, 10, 10, 10dp)
-        return SearchHolder(view, context)
+        val view = SearchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SearchHolder(
+            view,
+            parent.context,
+            onLikeClickListener)
     }
 
     override fun onBindViewHolder(holder: SearchHolder, position: Int) {
