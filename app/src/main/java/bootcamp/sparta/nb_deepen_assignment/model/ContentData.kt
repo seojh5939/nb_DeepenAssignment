@@ -6,7 +6,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ContentData(
-    val id: Int,
+    val id: Long,
     val dateTime: String,
-    val thumbnail: String
+    val thumbnail: String,
+    val isLike : Boolean = false
 ): Parcelable

@@ -8,7 +8,7 @@
     xmlns:tool="http://schemas.android.com/tools">
 
    <ImageView
-       android:id="@+id/image"
+       android:id="@+id/image_mypage"
        android:layout_width="wrap_content"
        android:layout_height="100dp"
        tool:src="@drawable/ic_launcher_background"
@@ -16,25 +16,24 @@
        app:layout_constraintTop_toTopOf="parent" />
 
    <TextView
-      android:id="@+id/dttm"
+      android:id="@+id/dttm_mypage"
        android:layout_width="0dp"
        android:layout_height="wrap_content"
-      app:layout_constraintStart_toEndOf="@+id/image"
-       app:layout_constraintEnd_toStartOf="@+id/like"
+      app:layout_constraintStart_toEndOf="@+id/image_mypage"
+       app:layout_constraintEnd_toStartOf="@+id/like_mypage"
       app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintBottom_toBottomOf="parent"
        />
 
    <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/like"
+      android:id="@+id/like_mypage"
        android:layout_width="40dp"
        android:layout_height="40dp"
-       android:background="@drawable/baseline_star_border_24"
-       app:layout_constraintStart_toEndOf="@+id/dttm"
+       android:background="@drawable/baseline_star_24"
+       app:layout_constraintStart_toEndOf="@+id/dttm_mypage"
        app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintTop_toTopOf="@+id/dttm"
-       app:layout_constraintBottom_toBottomOf="@+id/dttm"
+       app:layout_constraintTop_toTopOf="@+id/dttm_mypage"
+       app:layout_constraintBottom_toBottomOf="@+id/dttm_mypage"
        />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

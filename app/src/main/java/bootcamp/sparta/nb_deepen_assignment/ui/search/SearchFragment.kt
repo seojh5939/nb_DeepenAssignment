@@ -1,15 +1,21 @@
-package bootcamp.sparta.nb_deepen_assignment.ui
+package bootcamp.sparta.nb_deepen_assignment.ui.search
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import bootcamp.sparta.nb_deepen_assignment.databinding.SearchFragmentBinding
+import bootcamp.sparta.nb_deepen_assignment.model.ContentData
 
 import bootcamp.sparta.nb_deepen_assignment.repository.ContentRepository
-import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainViewModel
+import bootcamp.sparta.nb_deepen_assignment.ui.main.MainActivity
+import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedEventForMyPage
+import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedEventForSearch
+import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedViewModel
+import bootcamp.sparta.nb_deepen_assignment.viewmodel.SearchViewModel
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainViewModelFactory
 
 class SearchFragment() : Fragment() {
@@ -21,16 +27,23 @@ class SearchFragment() : Fragment() {
     private val binding get() = _binding!!
 
     private val adapter by lazy {
-        SearchListAdapter(requireContext())
+        SearchListAdapter(
+            onLikeClickListener = { position, item ->
+                modifySearchItem(position, item)
+            }
+        )
     }
+
 
     private val repository by lazy {
         ContentRepository()
     }
 
-    private val viewModel: MainViewModel by viewModels {
+    private val viewModel: SearchViewModel by viewModels {
         MainViewModelFactory(repository)
     }
+
+    private val sharedViewModel: MainSharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,6 +55,7 @@ class SearchFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initViewModel()
     }
 
     private fun initView() = with(binding) {
@@ -60,10 +74,29 @@ class SearchFragment() : Fragment() {
                 return true
             }
         })
+    }
 
-        viewModel.contentList.observe(requireActivity()) { result ->
-            adapter.submitList(result)
+    private fun initViewModel() = with(viewModel) {
+        list.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+            sharedViewModel.updateMyPAgeItems(it)
         }
+
+        with(sharedViewModel) {
+            searchedEvent.observe(viewLifecycleOwner) { event ->
+                when (event) {
+                    is MainSharedEventForSearch.UpdateSearcedContent -> {
+                        viewModel.modifySearchItem(
+                            item = event.item
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun modifySearchItem(position: Int, item: ContentData) {
+        viewModel.modifySearchItem(position, item)
     }
 
     override fun onDestroy() {
