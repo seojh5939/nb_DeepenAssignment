@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+   <ImageView
+       android:id="@+id/image"
+       android:layout_width="wrap_content"
+       android:layout_height="100dp"
+       tool:src="@drawable/ic_launcher_background"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent" />
+
+   <TextView
+      android:id="@+id/dttm"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+      app:layout_constraintStart_toEndOf="@+id/image"
+       app:layout_constraintEnd_toStartOf="@+id/like"
+      app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintBottom_toBottomOf="parent"
+       />
+
+   <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/like"
+       android:layout_width="40dp"
+       android:layout_height="40dp"
+       android:background="@drawable/baseline_star_border_24"
+       app:layout_constraintStart_toEndOf="@+id/dttm"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintTop_toTopOf="@+id/dttm"
+       app:layout_constraintBottom_toBottomOf="@+id/dttm"
+       />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
