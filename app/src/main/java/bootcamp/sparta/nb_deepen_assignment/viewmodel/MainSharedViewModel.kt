@@ -1,4 +1,4 @@
-package bootcamp.sparta.nb_deepen_assignment.ui.main
+package bootcamp.sparta.nb_deepen_assignment.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,8 +15,12 @@ class MainSharedViewModel: ViewModel(){
         _searchedEvent.value = MainSharedEventForSearch.UpdateSearcedContent(item)
     }
 
-    fun updateMyPageItems(items: List<ContentData>) {
-        _myPageEvent.value = MainSharedEventForMyPage.UpdateMyPageContent(items)
+    fun addMyPageItem(item: ContentData){
+        _myPageEvent.value = MainSharedEventForMyPage.AddMyPageContent(item)
+    }
+
+    fun removeMyPageItem(item: ContentData){
+        _myPageEvent.value = MainSharedEventForMyPage.RemoveMyPageContent(item)
     }
 
 }
@@ -28,7 +32,11 @@ sealed interface MainSharedEventForSearch {
 }
 
 sealed interface MainSharedEventForMyPage {
-    data class UpdateMyPageContent(
-        val items: List<ContentData>
+    data class AddMyPageContent(
+        val item: ContentData
+    ): MainSharedEventForMyPage
+
+    data class RemoveMyPageContent(
+        val item: ContentData
     ): MainSharedEventForMyPage
 }

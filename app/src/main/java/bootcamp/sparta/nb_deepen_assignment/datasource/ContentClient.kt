@@ -1,6 +1,5 @@
 package bootcamp.sparta.nb_deepen_assignment.datasource
 
-import bootcamp.sparta.nb_deepen_assignment.model.retrofit.VideoSearchResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
