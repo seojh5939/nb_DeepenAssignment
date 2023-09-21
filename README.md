@@ -27,9 +27,9 @@ For building and running the application you need:
 
 ### Screenshot
 <p align="left">
-<img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/1043c188-6afc-47a4-b9a8-6e55e7add984" width=20%" height="20%">
-<img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/f62e3d68-0aad-451f-a265-d2be82a2e1f4" width=20%" height="20%">
-<img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/ea4edb2c-6b03-4cf1-9910-6f08cb5a7707" width=20%" height="20%">
-<img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/92f129bb-4249-4d45-bce5-5fa563f7750a" width=20%" height="20%">
-<img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/e0f12eb4-c1aa-411a-bc9e-795240844872" width=20%" height="20%">
+  <img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/e0f12eb4-c1aa-411a-bc9e-795240844872" width=20%" height="20%">
+  <img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/92f129bb-4249-4d45-bce5-5fa563f7750a" width=20%" height="20%">
+  <img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/ea4edb2c-6b03-4cf1-9910-6f08cb5a7707" width=20%" height="20%">
+  <img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/f62e3d68-0aad-451f-a265-d2be82a2e1f4" width=20%" height="20%">
+  <img src="https://github.com/seojh5939/nb_DeepenAssignment/assets/76927858/1043c188-6afc-47a4-b9a8-6e55e7add984" width=20%" height="20%">
 </p>
