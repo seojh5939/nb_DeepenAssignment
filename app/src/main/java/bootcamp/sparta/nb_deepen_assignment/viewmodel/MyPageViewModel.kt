@@ -12,6 +12,10 @@ class MyPageViewModel(application: Application) : AndroidViewModel(application) 
 
     fun addItem(item: ContentData) {
         val current = list.value.orEmpty().toMutableList()
+        val check = current.find { it.id == item.id }
+        if(check?.isLike == item.isLike) {
+            return
+        }
         current.add(item)
         _list.value = current
     }
