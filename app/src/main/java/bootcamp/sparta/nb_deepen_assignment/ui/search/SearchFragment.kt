@@ -11,8 +11,6 @@ import bootcamp.sparta.nb_deepen_assignment.databinding.SearchFragmentBinding
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
 
 import bootcamp.sparta.nb_deepen_assignment.repository.ContentRepository
-import bootcamp.sparta.nb_deepen_assignment.ui.main.MainActivity
-import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedEventForMyPage
 import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedEventForSearch
 import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedViewModel
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.SearchViewModel
@@ -33,7 +31,6 @@ class SearchFragment() : Fragment() {
             }
         )
     }
-
 
     private val repository by lazy {
         ContentRepository()
@@ -79,7 +76,7 @@ class SearchFragment() : Fragment() {
     private fun initViewModel() = with(viewModel) {
         list.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            sharedViewModel.updateMyPAgeItems(it)
+            sharedViewModel.updateMyPageItems(it)
         }
 
         with(sharedViewModel) {
