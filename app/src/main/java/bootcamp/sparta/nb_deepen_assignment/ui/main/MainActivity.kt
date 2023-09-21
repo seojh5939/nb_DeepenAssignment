@@ -1,12 +1,11 @@
-package bootcamp.sparta.nb_deepen_assignment.ui
+package bootcamp.sparta.nb_deepen_assignment.ui.main
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.viewpager2.widget.ViewPager2
-import bootcamp.sparta.nb_deepen_assignment.R
 import bootcamp.sparta.nb_deepen_assignment.databinding.MainActivityBinding
+import bootcamp.sparta.nb_deepen_assignment.model.ContentData
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView()=with(binding) {
         viewPagerMain.adapter = mainViewPagerAdapter
+        viewPagerMain.offscreenPageLimit = mainViewPagerAdapter.itemCount
+
         TabLayoutMediator(tabLayoutMain, viewPagerMain) { tab, position ->
             tab.setText(mainViewPagerAdapter.getTabName(position))
         }.attach()

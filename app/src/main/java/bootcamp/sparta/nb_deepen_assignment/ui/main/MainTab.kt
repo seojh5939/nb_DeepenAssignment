@@ -1,4 +1,4 @@
-package bootcamp.sparta.nb_deepen_assignment.ui
+package bootcamp.sparta.nb_deepen_assignment.ui.main
 
 import androidx.fragment.app.Fragment
 
