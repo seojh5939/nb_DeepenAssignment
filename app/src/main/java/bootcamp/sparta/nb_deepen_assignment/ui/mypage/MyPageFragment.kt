@@ -9,8 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import bootcamp.sparta.nb_deepen_assignment.databinding.MyPageFragmentBinding
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
-import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedEventForMyPage
-import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedViewModel
+import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainSharedEventForMyPage
+import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainSharedViewModel
 import bootcamp.sparta.nb_deepen_assignment.utils.Utils
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.MyPageViewModel
 
@@ -64,9 +64,8 @@ class MyPageFragment : Fragment() {
         with(sharedViewModel) {
             myPageEvent.observe(viewLifecycleOwner) { event ->
                 when (event) {
-                    is MainSharedEventForMyPage.UpdateMyPageContent -> {
-                        updateMyPageBookmark(event.items)
-                    }
+                    is MainSharedEventForMyPage.AddMyPageContent -> addBookmarkedItem(event.item)
+                    is MainSharedEventForMyPage.RemoveMyPageContent -> removeBookmarkedItem(event.item)
                 }
             }
         }
@@ -86,16 +85,14 @@ class MyPageFragment : Fragment() {
     }
 
     // MyPage 좋아요 업데이트 이벤트
-    private fun updateMyPageBookmark(items: List<ContentData>) {
-        for (i in items.indices) {
-            if (items[i].isLike) {
-                viewModel.addItem(items[i])
-                viewModel.saveSharedPrefs(items[i])
-            } else {
-                viewModel.removeItem(item = items[i])
-                viewModel.deleteSharedPrefs(items[i])
-            }
-        }
+    private fun addBookmarkedItem(item: ContentData) {
+        viewModel.addItem(item)
+        viewModel.saveSharedPrefs(item)
+    }
+
+    private fun removeBookmarkedItem(item: ContentData) {
+        viewModel.removeItem(item = item)
+        viewModel.deleteSharedPrefs(item)
     }
 
     override fun onDestroy() {
