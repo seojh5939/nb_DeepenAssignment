@@ -15,13 +15,10 @@ class MainSharedViewModel: ViewModel(){
         _searchedEvent.value = MainSharedEventForSearch.UpdateSearcedContent(item)
     }
 
-    fun updateMyPAgeItems(items: List<ContentData>?) {
-        items?.filter {
-            it.isLike
-        }?.also {
-            _myPageEvent.value = MainSharedEventForMyPage.UpdateMyPageItem(it)
-        }
+    fun updateMyPageItems(items: List<ContentData>) {
+        _myPageEvent.value = MainSharedEventForMyPage.UpdateMyPageContent(items)
     }
+
 }
 
 sealed interface MainSharedEventForSearch {
@@ -31,7 +28,7 @@ sealed interface MainSharedEventForSearch {
 }
 
 sealed interface MainSharedEventForMyPage {
-    data class UpdateMyPageItem(
+    data class UpdateMyPageContent(
         val items: List<ContentData>
-    ):MainSharedEventForMyPage
+    ): MainSharedEventForMyPage
 }

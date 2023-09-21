@@ -1,20 +1,22 @@
 package bootcamp.sparta.nb_deepen_assignment.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
+import bootcamp.sparta.nb_deepen_assignment.utils.Utils
 
-class MyPageViewModel: ViewModel() {
+class MyPageViewModel(application: Application) : AndroidViewModel(application) {
     private var _list = MutableLiveData<List<ContentData>>()
     val list get() = _list
 
     fun addItem(item: ContentData) {
-        val currentList = list.value.orEmpty().toMutableList()
-        currentList.add(item)
-        _list.value = currentList
+        val current = list.value.orEmpty().toMutableList()
+        current.add(item)
+        _list.value = current
     }
 
-    fun removeItem(position: Int? =null, item: ContentData) {
+    fun removeItem(position: Int? = null, item: ContentData) {
         fun searchIndex(item: ContentData): Int {
             val currentList = list.value.orEmpty().toMutableList()
             val selectedItem = currentList.find { it.id == item.id }
@@ -24,7 +26,7 @@ class MyPageViewModel: ViewModel() {
         val currentList = list.value.orEmpty().toMutableList()
         val currentPosition = position ?: searchIndex(item)
 
-        if(currentPosition == -1) {
+        if (currentPosition == -1) {
             return
         }
 
@@ -32,7 +34,13 @@ class MyPageViewModel: ViewModel() {
         _list.value = currentList
     }
 
-    fun updateMyPageItems(items: List<ContentData>) {
-        _list.value = items
+    fun saveSharedPrefs(item: ContentData) {
+        val appContext = getApplication<Application>().applicationContext
+        Utils.saveMyPageContent(appContext, item)
+    }
+
+    fun deleteSharedPrefs(item: ContentData) {
+        val appContext = getApplication<Application>().applicationContext
+        Utils.removeMyPageContent(appContext, item)
     }
 }

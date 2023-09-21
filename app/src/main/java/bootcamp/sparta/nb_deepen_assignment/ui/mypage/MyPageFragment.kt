@@ -11,6 +11,7 @@ import bootcamp.sparta.nb_deepen_assignment.databinding.MyPageFragmentBinding
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
 import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedEventForMyPage
 import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedViewModel
+import bootcamp.sparta.nb_deepen_assignment.utils.Utils
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.MyPageViewModel
 
 class MyPageFragment : Fragment() {
@@ -24,8 +25,7 @@ class MyPageFragment : Fragment() {
     private val listAdapter by lazy {
         MyPageListAdapter(
             onLikeClickListener = { position, item ->
-                removeMyPageItem(position, item)
-                sharedViewModel.updateSearchedItem(item)
+                likeClickActions(position, item)
             }
         )
     }
@@ -48,7 +48,9 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initViewModel()
+        initData()
     }
+
 
     private fun initView() = with(binding) {
         recyclerView.adapter = listAdapter
@@ -62,23 +64,38 @@ class MyPageFragment : Fragment() {
         with(sharedViewModel) {
             myPageEvent.observe(viewLifecycleOwner) { event ->
                 when (event) {
-                    is MainSharedEventForMyPage.UpdateMyPageItem -> {
-                        viewModel.updateMyPageItems(event.items)
+                    is MainSharedEventForMyPage.UpdateMyPageContent -> {
+                        updateMyPageBookmark(event.items)
                     }
                 }
             }
         }
     }
 
-    fun addMyPageItem(item: ContentData) {
-        viewModel.addItem(item)
+    private fun initData() {
+        // Load SharedPrefs
+        val list = Utils.loadMyPageContents(requireContext())
+        viewModel.list.value = list
     }
 
-    fun removeMyPageItem(position: Int?= null, item: ContentData) {
-        viewModel.removeItem(
-            position = position,
-            item = item
-        )
+    // MyPage의 Adapter item 클릭시 실행하는 행동.
+    private fun likeClickActions(position: Int, item: ContentData) {
+        viewModel.removeItem(position, item)
+        sharedViewModel.updateSearchedItem(item)
+        viewModel.deleteSharedPrefs(item)
+    }
+
+    // MyPage 좋아요 업데이트 이벤트
+    private fun updateMyPageBookmark(items: List<ContentData>) {
+        for (i in items.indices) {
+            if (items[i].isLike) {
+                viewModel.addItem(items[i])
+                viewModel.saveSharedPrefs(items[i])
+            } else {
+                viewModel.removeItem(item = items[i])
+                viewModel.deleteSharedPrefs(items[i])
+            }
+        }
     }
 
     override fun onDestroy() {
