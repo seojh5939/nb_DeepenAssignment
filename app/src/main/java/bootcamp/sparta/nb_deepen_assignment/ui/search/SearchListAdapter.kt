@@ -1,5 +1,6 @@
 package bootcamp.sparta.nb_deepen_assignment.ui.search
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -79,5 +80,11 @@ class SearchListAdapter(
 
     override fun onBindViewHolder(holder: SearchHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearItems() {
+        submitList(null)
+        notifyDataSetChanged()
     }
 }
