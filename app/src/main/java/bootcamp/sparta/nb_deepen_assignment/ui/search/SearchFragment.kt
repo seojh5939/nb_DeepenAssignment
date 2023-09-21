@@ -1,25 +1,31 @@
 package bootcamp.sparta.nb_deepen_assignment.ui.search
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import bootcamp.sparta.nb_deepen_assignment.databinding.SearchFragmentBinding
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
 
 import bootcamp.sparta.nb_deepen_assignment.repository.ContentRepository
-import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedEventForSearch
-import bootcamp.sparta.nb_deepen_assignment.ui.main.MainSharedViewModel
+import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainSharedEventForSearch
+import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainSharedViewModel
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.SearchViewModel
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainViewModelFactory
 
-class SearchFragment() : Fragment() {
+
+class SearchFragment : Fragment() {
     companion object {
         fun newInstance() = SearchFragment()
     }
+    private var page = 1
 
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
@@ -28,6 +34,11 @@ class SearchFragment() : Fragment() {
         SearchListAdapter(
             onLikeClickListener = { position, item ->
                 modifySearchItem(position, item)
+                if(item.isLike) {
+                    sharedViewModel.addMyPageItem(item)
+                } else {
+                    sharedViewModel.removeMyPageItem(item)
+                }
             }
         )
     }
@@ -58,11 +69,28 @@ class SearchFragment() : Fragment() {
     private fun initView() = with(binding) {
         recyclerView.adapter = adapter
 
+        // 무한스크롤 처리
+        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                val totalItemCount = recyclerView.adapter?.itemCount ?: 0
+
+                if(lastVisibleItemPosition + 1 == totalItemCount) {
+                    page += 1
+                    viewModel.resultImageAndVideo(viewModel.query.value ?: "", page)
+                }
+            }
+        })
+
+        // SearchView
         searchView.setOnQueryTextListener(object :
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
-                if (p0 != null) {
-                    viewModel.resultImageAndVideo(p0)
+                if(!p0.isNullOrEmpty()) {
+                    viewModel.query.value = p0
                 }
                 return false
             }
@@ -74,11 +102,28 @@ class SearchFragment() : Fragment() {
     }
 
     private fun initViewModel() = with(viewModel) {
-        list.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            sharedViewModel.updateMyPageItems(it)
+        // 검색 쿼리
+        query.observe(viewLifecycleOwner) {query ->
+            adapter.clearItems()
+            viewModel.searchedList.clear()
+            viewModel.resultImageAndVideo(query, page)
         }
 
+        // 로딩 스피너
+        loading.observe(viewLifecycleOwner) {
+            if(it) {
+                binding.loading.visibility = View.VISIBLE
+            } else {
+                binding.loading.visibility = View.INVISIBLE
+            }
+        }
+
+        // RecyclerView Item List
+        list.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
+        // Event
         with(sharedViewModel) {
             searchedEvent.observe(viewLifecycleOwner) { event ->
                 when (event) {
