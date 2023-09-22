@@ -7,7 +7,9 @@ import android.os.Bundle
 import bootcamp.sparta.nb_deepen_assignment.databinding.MainActivityBinding
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     companion object {
         fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
