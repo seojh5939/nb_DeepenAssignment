@@ -8,8 +8,9 @@ import bootcamp.sparta.nb_deepen_assignment.model.retrofit.VideoData
 import bootcamp.sparta.nb_deepen_assignment.model.retrofit.VideoSearchResponse
 import retrofit2.Response
 import java.util.concurrent.atomic.AtomicLong
+import javax.inject.Inject
 
-class ContentRepository {
+class ContentRepository @Inject constructor() {
     private val idGenerate = AtomicLong(1L)
 
     suspend fun searchImage(query: String, sort: String, page: Int, size: Int): Response<ImageSearchResponse> {

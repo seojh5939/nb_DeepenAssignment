@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bootcamp.sparta.nb_deepen_assignment.databinding.SearchFragmentBinding
+import bootcamp.sparta.nb_deepen_assignment.di.MainApplication
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
 
 import bootcamp.sparta.nb_deepen_assignment.repository.ContentRepository
@@ -19,8 +20,10 @@ import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainSharedEventForSearch
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainSharedViewModel
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.SearchViewModel
 import bootcamp.sparta.nb_deepen_assignment.viewmodel.MainViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
     companion object {
         fun newInstance() = SearchFragment()
@@ -43,12 +46,8 @@ class SearchFragment : Fragment() {
         )
     }
 
-    private val repository by lazy {
-        ContentRepository()
-    }
-
     private val viewModel: SearchViewModel by viewModels {
-        MainViewModelFactory(repository)
+        MainViewModelFactory((requireActivity().application as MainApplication).repository)
     }
 
     private val sharedViewModel: MainSharedViewModel by activityViewModels()
