@@ -6,9 +6,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import bootcamp.sparta.nb_deepen_assignment.model.ContentData
 import bootcamp.sparta.nb_deepen_assignment.repository.ContentRepository
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchViewModel(private val repository: ContentRepository) : ViewModel() {
+@HiltViewModel
+class SearchViewModel @Inject constructor(private val repository: ContentRepository) : ViewModel() {
     private val _list: MutableLiveData<List<ContentData>> = MutableLiveData()
     val list get() = _list
     var loading: MutableLiveData<Boolean> = MutableLiveData()
